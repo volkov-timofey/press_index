@@ -67,7 +67,7 @@ class NewsParser:
         Возвращаем список страниц с новостями
         """
         pages = []
-        links = soup.find_all("a", {"class": "list-item__title"})
+        links = soup.find_all("a", {"class": "main-news-big"})
         for href in links:
             pages.append(href.get("href"))
         return pages
@@ -144,7 +144,7 @@ class NewsParser:
         url = f"https://ria.ru/search/"
         # https://lenta.ru/search?query=undefined#size=10|sort=2|domain=1|modified,format=yyyy-MM-dd
         # https://www.kommersant.ru/archive/news/day/2024-08-30
-        # https://iz.ru/news !!! номер 1, остальные по накатке!!!
+        # https://iz.ru !!! номер 1, остальные по накатке!!!
         # https://www.interfax.ru/news/
 
         # params запроса
