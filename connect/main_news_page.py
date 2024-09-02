@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 
 from connect.check_connection import HttpResponse
-from config import HEADERS
 
 
 class NewsParser(HttpResponse):
@@ -11,13 +10,12 @@ class NewsParser(HttpResponse):
 
     def get_html_page(
             self,
-            url_hub: str,
-            headers: dict = HEADERS
+            url_hub: str
     ) -> BeautifulSoup:
         """
         Get html code page
         """
-        response = self.get_response(url_hub, headers)
+        response = self.get_response(url_hub)
         soup_main_page = BeautifulSoup(response.text, "html.parser")
 
         return soup_main_page
@@ -35,7 +33,7 @@ class NewsParser(HttpResponse):
         """
         Get articles page
         """
-        soup_main_page = self.get_html_page(url_hub=self.url_hub, headers=HEADERS)
+        soup_main_page = self.get_html_page(url_hub=self.url_hub)
         pages_article = self.get_pages(soup_main_page)
 
         return pages_article

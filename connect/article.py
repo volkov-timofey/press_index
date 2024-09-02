@@ -1,9 +1,5 @@
 from datetime import datetime, date
 
-from bs4 import BeautifulSoup
-
-from config import HEADERS
-
 
 def get_title(soup) -> str:
     """

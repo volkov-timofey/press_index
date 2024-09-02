@@ -1,7 +1,6 @@
 from urllib.parse import urljoin
 from datetime import datetime
 
-from config import HEADERS
 from connect.article import get_title, get_published_date, get_url, get_author_information
 from connect.main_news_page import NewsParser
 
