@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import Hubs
+from .models import Hub
 
-admin.site.register(Hubs)
+admin.site.register(Hub)
