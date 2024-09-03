@@ -1,16 +1,17 @@
 from urllib.parse import urljoin
+from datetime import datetime, date
 
-from connect.article import get_title, get_published_date, get_url
+from connect.article import get_title, get_url
 from connect.main_news_page import NewsParser
 
 
-class SixSix(NewsParser):
+class Interfux(NewsParser):
     """
-    Model parser for 66.ru
+    Model parser for Interfux
     """
     def __init__(self):
-        url_hub = "https://www.66.ru"
-        soup_attrs = {"class": "new-news-piece__link"}
+        url_hub = "https://www.interfax.ru"
+        soup_attrs = {"tabindex": "5"}
         super().__init__(url_hub, soup_attrs)
 
     def _clean__url_pages(self) -> list:
@@ -19,29 +20,28 @@ class SixSix(NewsParser):
         :return:
         """
         row_url_pages = self.extract_articles()
-        return [url_ for url_ in row_url_pages if 'news' in url_]
+        return [url_ for url_ in row_url_pages if 'https' not in url_]
 
-    def get_author_information(self, soup) -> dict | None:
+    @staticmethod
+    def get_published_date(soup) -> date:
         """
-        Get authors article
+        Get published date
         :param soup:
         :return:
         """
-        author_object = soup.find(
-            'div', {'class': 'news-piece-layout__caption-author'}
-        )
-        if author_object:
-            author_name = author_object.get_text()
-            author_url = urljoin(
-                self.url_hub,
-                author_object.find('a', href=True).get('href')
-            )
-            print(f'Автор: {author_name}, url: {author_url}')
-            return {
-                'author_full_name': author_name,
-                'author_url': author_url
-            }
-        print('Автор: не обнаружен')
+        published_time = soup.find('meta', property="article:published_time")
+
+        if not published_time:
+            print("Время публикации: отсутствует")
+            return published_time
+
+        published_time = published_time.get('content')
+        published_date = datetime.strptime(
+            published_time, '%Y-%m-%dT%H:%M%z'
+        ).date()
+
+        print("Время публикации:", published_date)
+        return published_date
 
     @staticmethod
     def get_text_article(soup) -> str | None:
@@ -50,7 +50,8 @@ class SixSix(NewsParser):
         :param soup:
         :return:
         """
-        text_object = soup.find('div', {'itemprop': 'articleBody'})
+        text_object = soup.find('article', {'itemprop': 'articleBody'})
+
         text_article = '/n'.join(
             [p.get_text() for p in text_object.find_all('p')]
         ) if text_object else text_object
@@ -69,17 +70,10 @@ class SixSix(NewsParser):
 
         article_information = {
             'title': get_title(soup),
-            'date_published': get_published_date(soup),
+            'date_published': self.get_published_date(soup),
             'url': get_url(soup),
             'article': self.get_text_article(soup)
         }
-
-        author_information = self.get_author_information(soup)
-        if author_information:
-            article_information = {
-                **article_information,
-                **author_information
-            }
 
         return article_information
 

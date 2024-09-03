@@ -1,9 +1,7 @@
 from urllib.parse import urljoin
-from datetime import datetime
 
-from bs4 import BeautifulSoup
-
-from connect.article import get_title, get_published_date, get_url, get_author_information
+from connect.article import (get_title, get_published_date,
+                             get_url, get_author_information)
 from connect.main_news_page import NewsParser
 
 
@@ -28,16 +26,16 @@ class RT(NewsParser):
         ]
 
     @staticmethod
-    def get_text_article(soup) -> str|None:
+    def get_text_article(soup) -> str | None:
         """
         Get text articles with class article__text
         :param soup:
         :return:
         """
         text_object = soup.find('div', {'class': 'article__text'})
-        text_article = '/n'.join([p.get_text() for p in text_object.find_all('p')])\
-            if text_object\
-            else text_object
+        text_article = '/n'.join(
+            [p.get_text() for p in text_object.find_all('p')]
+        ) if text_object else text_object
 
         print(f'Статья: {text_article or "Текст не обнаружен"}')
         return text_article

@@ -5,7 +5,7 @@ import asyncio
 from db.database import DataBase
 from dotenv import load_dotenv
 
-from hubs.interfax.interfux import Interfux
+from hubs.interfux.interfux import Interfux
 from hubs.rt.rt import RT
 from hubs.svr.sixsix import SixSix
 
@@ -56,7 +56,7 @@ async def insert_data_to_db(data_hub: tuple):
         if not db.get_data_table(name_table, 'url', ('url', page.get('url'))):
             db.change_table(name_table, fields_article, tuple(values))
 
-    await asyncio.sleep(interval)
+    await asyncio.sleep(interval.total_seconds())
 
 
 async def main():

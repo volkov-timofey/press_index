@@ -28,7 +28,6 @@ class NewsParser(HttpResponse):
 
         return [href.get("href") for href in links]
 
-
     def extract_articles(self):
         """
         Get articles page

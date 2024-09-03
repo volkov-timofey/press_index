@@ -7,7 +7,8 @@ def get_title(soup) -> str:
     :param soup:
     :return:
     """
-    og_title = soup.find('meta', property='og:title')['content']
+    og_title = soup.find('meta', property='og:title')
+    og_title = og_title.get('content')
     print("Заголовок страницы:", og_title)
     return og_title
 
@@ -17,7 +18,8 @@ def get_url(soup) -> str:
     :param soup:
     :return:
     """
-    og_url = soup.find('meta', property='og:url')['content']
+    og_url = soup.find('meta', property='og:url')
+    og_url = og_url.get('content')
     print("URL:", og_url)
     return og_url
 
@@ -48,7 +50,7 @@ def get_author_information(soup) -> list | None:
         print(f'Автор не найден')
         return author_object
 
-    authors = [autor['content'] for autor in author_object]
+    authors = [autor.get('content') for autor in author_object]
     names = ', '.join(authors)
     print(f'Автор: {names}')
     return authors

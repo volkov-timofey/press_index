@@ -24,4 +24,3 @@ INSERT INTO hubs_hub (name, url, time_delta_check)
 VALUES ('66.ru', 'https://www.66.ru', '00:10:00');
 INSERT INTO hubs_hub (name, url, time_delta_check)
 VALUES ('Russia Today', 'https://russian.rt.com', '00:10:00');
-CREATE UNIQUE INDEX url_article ON articles(url);
